@@ -8,12 +8,15 @@ package com.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 /**
@@ -44,14 +47,18 @@ public class Event implements Serializable {
     @Column(name="price")
     private Float price;
 
-
+    @ManyToMany(mappedBy = "events")
+    private Set<Utilisateur> utilisateurs;
+    
     public Event(){}
     public Event(String name, String description, LocalDate date, String localization, Float price) {
+        this.utilisateurs = new HashSet<>();
         this.name = name;
         this.description = description;
         this.date = date;
         this.localization = localization;
         this.price = price;
+        this.utilisateurs = new HashSet<>();
     }
 
     public String getName() {

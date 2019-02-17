@@ -6,11 +6,18 @@
 package com.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 /**
  *
@@ -30,12 +37,20 @@ public class Utilisateur implements Serializable {
     private String motDePasse;
     @Column(name="nom")
     private String nom;
-
+    
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+        name = "Employee_Project", 
+        joinColumns = { @JoinColumn(name = "utilisateur_id") }, 
+        inverseJoinColumns = { @JoinColumn(name = "event_id") }
+    )
+    private Set<Event> events;
     public Utilisateur(){}
     public Utilisateur(String email, String motDePasse, String nom) {
         this.email = email;
         this.motDePasse = motDePasse;
         this.nom = nom;
+        this.events = new HashSet<>();
     }
 
     public Long getId() {
