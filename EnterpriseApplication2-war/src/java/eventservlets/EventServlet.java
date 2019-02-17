@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
@@ -82,6 +83,8 @@ EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribu
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<Event> criteriaQuery =  criteriaBuilder.createQuery(Event.class);
             Root<Event> event = criteriaQuery.from(Event.class);
+
+            
             if(id == 0 ){
                 /*Get Events*/
                 criteriaQuery.select(event);
