@@ -75,10 +75,7 @@ EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribu
             criteriaQuery.select(event);
             List<Event> listEvent = em.createQuery(criteriaQuery).getResultList();
             request.setAttribute("eventList", listEvent);
-            
-            getServletContext().getRequestDispatcher("/event_add.jsp").forward(request, response);
-            
-            
+            getServletContext().getRequestDispatcher("/event/add.jsp").forward(request, response);
         }finally{
             if(em.getTransaction().isActive()){
                 em.getTransaction().rollback();
@@ -113,9 +110,13 @@ EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribu
                 em.getTransaction().begin();
                 em.persist(new Event(name,descrition,date,localization,price));
                 em.getTransaction().commit();
-            }
-        }finally{            
-            response.sendRedirect("/eventServlet");
+            }            
+            response.sendRedirect("/EnterpriseApplication2-war/eventServlet");
+            System.out.println("catch");
+
+        }finally{
+            System.out.println("up");
+            System.out.println("down");
 
             if(em.getTransaction().isActive()){
                 em.getTransaction().rollback();

@@ -15,7 +15,7 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-        <form method="POST" action="EventServlet/add">
+        <form method="POST" action="add">
             <br>Nom de l'evenement = <input type="text" name="name">
             <br>Description de l'evenement = <input type="text" name="description">
             <br>Date l'evenement = <input type="date" name="date">
@@ -24,5 +24,6 @@
             <br><input type="submit" value="Creer">
         </form>
         <hr>
+        <a href="eventServlet">Ajouter un Evenement</a>
     </body>
 </html>

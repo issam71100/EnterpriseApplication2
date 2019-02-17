@@ -91,7 +91,7 @@ EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribu
             List<Event> listEvent = em.createQuery(criteriaQuery).getResultList();
             request.setAttribute("eventList", listEvent);
             
-            getServletContext().getRequestDispatcher("/event_index.jsp").forward(request, response);
+            getServletContext().getRequestDispatcher("/event/index.jsp").forward(request, response);
             
         }finally{
             if(em.getTransaction().isActive()){
@@ -112,7 +112,7 @@ EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribu
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         
-        EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
+        /*EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
         EntityManager em = emf.createEntityManager();
 
         try{
@@ -128,7 +128,7 @@ EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribu
                 em.persist(new Event(name,descrition,date,localization,price));
                 em.getTransaction().commit();
             }
-            doGet(request, response);
+            doGet(request, response);*/
            /* System.out.println("out");
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
             CriteriaQuery<Event> criteriaQuery =  criteriaBuilder.createQuery(Event.class);
@@ -140,12 +140,12 @@ EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribu
             //getServletContext().getRequestDispatcher("/event.jsp").forward(request, response);
             //response.sendRedirect("/event.jsp");
 
-        }finally{
+        /*}finally{
             if(em.getTransaction().isActive()){
                 em.getTransaction().rollback();
                 em.close();
             }
-        }
+        }*/
     }
 
     /**

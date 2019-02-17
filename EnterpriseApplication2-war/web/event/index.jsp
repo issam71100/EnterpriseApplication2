@@ -43,7 +43,9 @@
             
             <% }%>
             </tbody>
-        </table> 
+        </table>
+            <hr>
+            <a href="eventServlet/add">Ajouter un Evenement</a>
 
         
     </body>
