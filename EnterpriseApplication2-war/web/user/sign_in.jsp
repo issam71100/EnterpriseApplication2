@@ -8,6 +8,9 @@
         <link type="text/css" rel="stylesheet" href="form.css" />
     </head>
     <body>
+        <h2>Bienvenue <%= (String) session.getAttribute("name")%></h2>
+        <h2>Bienvenue <%= (String) session.getAttribute("id")%></h2>
+
         <form method="post" action="sign">
             <fieldset>
                 <legend>Inscription</legend>

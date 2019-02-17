@@ -47,18 +47,17 @@ public class Event implements Serializable {
     @Column(name="price")
     private Float price;
 
-    @ManyToMany(mappedBy = "events")
-    private Set<Utilisateur> utilisateurs;
+    /*@ManyToMany(mappedBy = "events")
+    private Set<Utilisateur> utilisateurs;*/
     
     public Event(){}
     public Event(String name, String description, LocalDate date, String localization, Float price) {
-        this.utilisateurs = new HashSet<>();
         this.name = name;
         this.description = description;
         this.date = date;
         this.localization = localization;
         this.price = price;
-        this.utilisateurs = new HashSet<>();
+        //this.utilisateurs = new HashSet<>();
     }
 
     public String getName() {

@@ -4,6 +4,7 @@
     Author     : issam
 --%>
 
+<%@page import="java.util.Enumeration"%>
 <%@page import="java.util.List"%>
 <%@page import="com.model.Event"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -15,6 +16,9 @@
     </head>
     <body>
         <h1>Hello World!</h1>
+        <% if (session.getAttribute("name") != null) {%>
+        <h2>Bienvenue <%= (String) session.getAttribute("name")%></h2>
+        <%}%>
         <hr>
         <table>
             <thead>
@@ -30,29 +34,31 @@
                 </tr>
             </thead>
             <tbody>
-                <% @SuppressWarnings("unchecked")
+                <% @SuppressWarnings(  "unchecked")
                     List<Event> events = (List<Event>) request.getAttribute("eventList");
-                    for(Event event: events){
+                    for (Event event : events) {
                 %>
-            <td> <%=event.getId()%> </td>
-            <td> <%=event.getName()%> </td>
-            <td> <%=event.getDescription()%> </td>
-            <td> <%=event.getDate()%> </td>
-            <td> <%=event.getLocalization()%> </td>
-            <td> <%=event.getPrice()%> </td>
-            <td> nada </td>
-            <td> 
-                <ul>
-                    <li>
-                        <a href="eventServlet?id=<%=event.getId()%>">show</a>
-                    </li>
-                </ul>
-            </td>
-            
-            <% }%>
+                <tr>
+                    <td> <%=event.getId()%> </td>
+                    <td> <%=event.getName()%> </td>
+                    <td> <%=event.getDescription()%> </td>
+                    <td> <%=event.getDate()%> </td>
+                    <td> <%=event.getLocalization()%> </td>
+                    <td> <%=event.getPrice()%> </td>
+                    <td> nada </td>
+                    <td> 
+                        <ul>
+                            <li>
+                                <a href="eventServlet?id=<%=event.getId()%>">show</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <% }%>
             </tbody>
         </table>
-            <hr>
-            <a href="eventServlet/add">Ajouter un Evenement</a>
+        <hr>
+        <a href="eventServlet/add">Ajouter un Evenement</a>
     </body>
 </html>

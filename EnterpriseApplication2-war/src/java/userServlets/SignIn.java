@@ -13,9 +13,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-@WebServlet(        
-    urlPatterns ={"/user/sign","/user/sign"}
+@WebServlet(
+        urlPatterns = {"/user/sign", "/user/sign"}
 )
 
 public class SignIn extends HttpServlet {
@@ -73,24 +74,35 @@ public class SignIn extends HttpServlet {
 
         EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
         EntityManager em = emf.createEntityManager();
-        
-        try{
+
+        String id;
+        try {
             em.getTransaction().begin();
-            em.persist(new Utilisateur(email,motDePasse,nom));
+            Utilisateur user = new Utilisateur(email, motDePasse, nom);
+            em.persist(user);
+            id = Long.toString(user.getId());
             em.getTransaction().commit();
-        }finally{
-            if(em.getTransaction().isActive()){
+        } finally {
+            if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
                 em.close();
             }
         }
-        
+        //generate a new session
+        HttpSession newSession = request.getSession(true);
+        //setting session to expiry in 1 hour
+        newSession.setMaxInactiveInterval(60 * 60);
+        newSession.setAttribute("name", nom);
+        newSession.setAttribute("id", id);
+
         /* Stockage du résultat et des messages d'erreur dans l'objet request */
         request.setAttribute(ATT_ERREURS, erreurs);
         request.setAttribute(ATT_RESULTAT, resultat);
 
         /* Transmission de la paire d'objets request/response à notre JSP */
-        this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
+        //this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
+        response.sendRedirect("/EnterpriseApplication2-war/eventServlet");
+
     }
 
     /**

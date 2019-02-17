@@ -38,19 +38,19 @@ public class Utilisateur implements Serializable {
     @Column(name="nom")
     private String nom;
     
-    @ManyToMany(cascade = { CascadeType.ALL })
+    /*@ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
         name = "Employee_Project", 
         joinColumns = { @JoinColumn(name = "utilisateur_id") }, 
         inverseJoinColumns = { @JoinColumn(name = "event_id") }
     )
-    private Set<Event> events;
+    private Set<Event> events;*/
     public Utilisateur(){}
     public Utilisateur(String email, String motDePasse, String nom) {
         this.email = email;
         this.motDePasse = motDePasse;
         this.nom = nom;
-        this.events = new HashSet<>();
+        //this.events = new HashSet<>();
     }
 
     public Long getId() {
