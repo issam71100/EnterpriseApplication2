@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ws;
+package userServlets;
 
+import eventservlets.*;
 import com.model.Event;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author issam
  */
 @WebServlet("/eventServlet/add")
-public class EventAddServlet extends HttpServlet {
+public class AddUserServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

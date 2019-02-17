@@ -15,7 +15,7 @@
     </servlet>
     <servlet>
         <servlet-name>EventServlet</servlet-name>
-        <servlet-class>ws.EventServlet</servlet-class>
+        <servlet-class>eventservlets.EventServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>

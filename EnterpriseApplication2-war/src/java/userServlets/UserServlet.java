@@ -3,12 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ws;
+package userServlets;
 
-import com.model.Event;
+import com.model.AppUser;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -26,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author issam
  */
 @WebServlet("/eventServlet")
-public class EventServlet extends HttpServlet {
+public class UserServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -67,32 +66,15 @@ public class EventServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
         EntityManager em = emf.createEntityManager();
-
         try{
-            /*String name =request.getParameter("name");
-            String descrition =request.getParameter("description");
-            String localization =request.getParameter("localization");
-            System.out.println(name);
-            System.out.println(descrition);
-            System.out.println(localization);
-            Float price = (float) 0;
-            LocalDate date = LocalDate.now();
-            System.out.println("begin");
-            if(name != null && descrition != null && localization !=null){
-                System.out.println("in");
-                em.getTransaction().begin();
-                em.persist(new Event(name,descrition,date,localization,price));
-                em.getTransaction().commit();
-            }*/
             CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-            CriteriaQuery<Event> criteriaQuery =  criteriaBuilder.createQuery(Event.class);
-            Root<Event> event = criteriaQuery.from(Event.class);
+            CriteriaQuery<AppUser> criteriaQuery =  criteriaBuilder.createQuery(AppUser.class);
+            Root<AppUser> event = criteriaQuery.from(AppUser.class);
             criteriaQuery.select(event);
-            List<Event> listEvent = em.createQuery(criteriaQuery).getResultList();
-            request.setAttribute("eventList", listEvent);
+            List<AppUser> userList = em.createQuery(criteriaQuery).getResultList();
+            request.setAttribute("eventList", userList);
             
-            getServletContext().getRequestDispatcher("/event/index.jsp").forward(request, response);
-            
+            getServletContext().getRequestDispatcher("/user/index.jsp").forward(request, response);
         }finally{
             if(em.getTransaction().isActive()){
                 em.getTransaction().rollback();
@@ -111,41 +93,6 @@ EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribu
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-        
-        /*EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
-        EntityManager em = emf.createEntityManager();
-
-        try{
-            String name =request.getParameter("name");
-            String descrition =request.getParameter("description");
-            String localization =request.getParameter("localization");
-            Float price = Float.parseFloat(request.getParameter("price"));
-            LocalDate date = LocalDate.parse(request.getParameter("date"));
-            System.out.println("begin");
-            if(name != null && descrition != null && localization !=null){
-                System.out.println("in");
-                em.getTransaction().begin();
-                em.persist(new Event(name,descrition,date,localization,price));
-                em.getTransaction().commit();
-            }
-            doGet(request, response);*/
-           /* System.out.println("out");
-            CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-            CriteriaQuery<Event> criteriaQuery =  criteriaBuilder.createQuery(Event.class);
-            Root<Event> event = criteriaQuery.from(Event.class);
-            criteriaQuery.select(event);
-            List<Event> listEvent = em.createQuery(criteriaQuery).getResultList();
-            request.setAttribute("eventList", listEvent);
-            */
-            //getServletContext().getRequestDispatcher("/event.jsp").forward(request, response);
-            //response.sendRedirect("/event.jsp");
-
-        /*}finally{
-            if(em.getTransaction().isActive()){
-                em.getTransaction().rollback();
-                em.close();
-            }
-        }*/
     }
 
     /**

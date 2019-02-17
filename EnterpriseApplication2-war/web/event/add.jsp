@@ -24,6 +24,6 @@
             <br><input type="submit" value="Creer">
         </form>
         <hr>
-        <a href="eventServlet">Ajouter un Evenement</a>
+        <a href=".">Index</a>
     </body>
 </html>

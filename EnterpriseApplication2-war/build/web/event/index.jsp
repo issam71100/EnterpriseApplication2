@@ -26,6 +26,7 @@
                     <th>Localization</th>
                     <th>Price</th>
                     <th>Participant</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,13 +41,18 @@
             <td> <%=event.getLocalization()%> </td>
             <td> <%=event.getPrice()%> </td>
             <td> nada </td>
+            <td> 
+                <ul>
+                    <li>
+                        <a href="eventServlet?id=<%=event.getId()%>">show</a>
+                    </li>
+                </ul>
+            </td>
             
             <% }%>
             </tbody>
         </table>
             <hr>
             <a href="eventServlet/add">Ajouter un Evenement</a>
-
-        
     </body>
 </html>
