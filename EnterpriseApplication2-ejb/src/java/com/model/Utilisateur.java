@@ -31,6 +31,7 @@ public class Utilisateur implements Serializable {
     @Column(name="nom")
     private String nom;
 
+    public Utilisateur(){}
     public Utilisateur(String email, String motDePasse, String nom) {
         this.email = email;
         this.motDePasse = motDePasse;

@@ -5,7 +5,6 @@
  */
 package eventservlets;
 
-import com.model.AppUser;
 import com.model.Event;
 import java.io.IOException;
 import java.io.PrintWriter;

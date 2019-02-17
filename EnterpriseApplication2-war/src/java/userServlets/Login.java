@@ -5,12 +5,10 @@
  */
 package userServlets;
 
-import eventservlets.*;
 import com.model.Event;
+import com.model.Utilisateur;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDate;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -18,16 +16,21 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import static userServlets.SignIn.VUE;
 
 /**
  *
  * @author issam
  */
-@WebServlet("/eventServlet/add")
-public class AddUserServlet extends HttpServlet {
+@WebServlet(name = "Login", urlPatterns = {"/user/login", "/user/login/"})
+public class Login extends HttpServlet {
+
+    public static final String VUE = "/user/login.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,10 +49,10 @@ public class AddUserServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet EventServlet</title>");            
+            out.println("<title>Servlet Login</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet EventServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Login at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -65,24 +68,9 @@ public class AddUserServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
-        EntityManager em = emf.createEntityManager();
-
-        try{
-            CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-            CriteriaQuery<Event> criteriaQuery =  criteriaBuilder.createQuery(Event.class);
-            Root<Event> event = criteriaQuery.from(Event.class);
-            criteriaQuery.select(event);
-            List<Event> listEvent = em.createQuery(criteriaQuery).getResultList();
-            request.setAttribute("eventList", listEvent);
-            getServletContext().getRequestDispatcher("/event/add.jsp").forward(request, response);
-        }finally{
-            if(em.getTransaction().isActive()){
-                em.getTransaction().rollback();
-                em.close();
-            }
-        }
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
     }
 
     /**
@@ -94,32 +82,45 @@ EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribu
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-        
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
         EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
         EntityManager em = emf.createEntityManager();
 
-        try{
-            String name =request.getParameter("name");
-            String descrition =request.getParameter("description");
-            String localization =request.getParameter("localization");
-            Float price = Float.parseFloat(request.getParameter("price"));
-            LocalDate date = LocalDate.parse(request.getParameter("date"));
-            System.out.println("begin");
-            if(name != null && descrition != null && localization !=null){
-                System.out.println("in");
-                em.getTransaction().begin();
-                em.persist(new Event(name,descrition,date,localization,price));
-                em.getTransaction().commit();
-            }            
-            response.sendRedirect("/EnterpriseApplication2-war/eventServlet");
-            System.out.println("catch");
+        try {
+            String email = request.getParameter("email");
+            String password = request.getParameter("motdepasse");
 
-        }finally{
-            System.out.println("up");
-            System.out.println("down");
+            CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+            CriteriaQuery<Utilisateur> criteriaQuery = criteriaBuilder.createQuery(Utilisateur.class);
+            Root<Utilisateur> user = criteriaQuery.from(Utilisateur.class);
 
-            if(em.getTransaction().isActive()){
+            criteriaQuery.select(user).where(criteriaBuilder.equal(user.get("email"), email));
+            Utilisateur utilisateur= null;
+            if(em.createQuery(criteriaQuery).getResultList().size() > 0)
+                utilisateur = em.createQuery(criteriaQuery).getResultList().get(0);
+            
+            if (utilisateur != null && password.equals(utilisateur.getMotDePasse())) {
+                HttpSession oldSession = request.getSession(false);
+                if (oldSession != null) {
+                    oldSession.invalidate();
+                }
+                //generate a new session
+                HttpSession newSession = request.getSession(true);
+                //setting session to expiry in 1 hour
+                newSession.setMaxInactiveInterval(60 * 60);
+                Cookie message = new Cookie("message", "Welcome");
+                response.addCookie(message);
+                System.out.println("success");
+                response.sendRedirect("/EnterpriseApplication2-war/eventServlet");
+            } else {
+                doGet(request, response);
+            }
+            request.setAttribute("user_session", utilisateur);
+
+        } finally {
+            if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
                 em.close();
             }

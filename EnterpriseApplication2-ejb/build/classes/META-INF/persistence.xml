@@ -4,7 +4,6 @@
     <jta-data-source>java:/derby</jta-data-source>
     <class>com.model.Event</class>
     <class>com.model.NewEntity</class>
-    <class>com.model.AppUser</class>
     <class>com.model.Utilisateur</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
