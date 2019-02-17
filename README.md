@@ -1,5 +1,4 @@
-# JSP_Servlet
-
+# JSP_Servlet by Kadar Issam
 Fonctionnalité fonctionnel : 
 - Creation d'un Utilisateur
 - Creation d'un Evenement 
